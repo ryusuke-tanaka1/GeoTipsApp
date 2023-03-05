@@ -1,0 +1,9 @@
+<%= form_with(model: @user, local: true) do |f| %>
+  <%= f.label :name, class: "label-#{yield(:form_user)}" %>
+  <%= f.text_field :name, class: "form-control" %>
+
+  <%= f.label :email, class: "label-#{yield(:form_user)}" %>
+  <%= f.email_field :email, class: "form-control" %>
+
+  <%= f.submit "アカウント作成", class: "btn btn-primary btn-block btn-#{yield(:form_user)}" %>
+<% end %>
