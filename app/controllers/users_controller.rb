@@ -23,6 +23,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user.update_attributes!(user_params)
   end
 
   def delete
