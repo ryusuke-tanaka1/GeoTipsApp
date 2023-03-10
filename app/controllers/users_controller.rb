@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :delete]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :admin_user, only: [:index]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   def show
   end
@@ -15,6 +17,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save!
+      login @user
+      redirect_to @user
     else
     end
   end
@@ -26,7 +30,7 @@ class UsersController < ApplicationController
     @user.update_attributes!(user_params)
   end
 
-  def delete
+  def destroy
   end
 
   private
@@ -35,6 +39,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email)
+      params.require(:user).permit(:name, :email, :password)
     end
 end

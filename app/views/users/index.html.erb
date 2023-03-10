@@ -1,3 +1,16 @@
 <%= provide(:title, "ユーザー一覧") %>
 
 <h1>ユーザー一覧</h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <table class="table table-condence table-bordered table-user">
+      <%= @users.each do |user| %>
+        <tr>
+          <td>user.name</td>
+          
+        </tr>
+      <%= end %>
+    </table>
+  </div>
+</div>
