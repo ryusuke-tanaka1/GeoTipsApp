@@ -16,10 +16,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save!
+    if @user.save
       login @user
       redirect_to @user
     else
+      render :new
     end
   end
 
@@ -27,15 +28,22 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update_attributes!(user_params)
+    if @user.update_attributes(user_params)
+      flash[:success] = "アカウント情報を修正しました。"
+      redirect_to @user
+    else
+      render :edit
+    end
   end
 
   def destroy
+    flash[:success] = "アカウントを削除しました。"
+    redirect_to root_url
   end
 
   private
     def set_user
-      @user = User.find(:id)
+      @user = User.find(params[:id])
     end
 
     def user_params

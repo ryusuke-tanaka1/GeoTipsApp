@@ -7,6 +7,6 @@ User.create!( name: "admin",
               )
 
 User.create!( name: "user1",
-              email: "user1@email.com",
+              email: "sample1@email.com",
               password: "password"
               )

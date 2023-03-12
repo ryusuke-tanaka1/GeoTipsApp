@@ -1,10 +1,16 @@
 <header class="navbar navbar-fixed-top navbar-inverse" >
   <div class="container">
-    <%= link_to "GeoTips", '#', id: "logo" %>
+    <%= link_to "GeoTips", root_path, id: "logo" %>
     <nav>
-      <ul class="nav navbar navbar-right">
-        <li><%= link_to "トップ", '#' %></li>
-        <li><%= link_to "アカウント", '#' %></li>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "トップ", root_path %></li>
+        <% if logged_in? %>
+          <% if current_user.admin? %>
+            <li><%= link_to "ユーザー一覧", users_path %></li>
+          <% end %>
+          <li><%= link_to "アカウント", current_user %></li>
+          <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
+        <% end %>
       </ul>
     </nav>
   </div>
