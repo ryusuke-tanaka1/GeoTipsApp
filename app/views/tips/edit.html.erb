@@ -1,0 +1,15 @@
+<% provide(:title, "Tips編集") %>
+
+<h1>Tipsの編集</h1>
+<%= form_with(model: @tip, url: user_tip_path, local: true) do |f| %>
+  <%= f.label :country, class: "label-tips" %>
+  <%= f.text_field :country, class: "form-control" %>
+
+  <%= f.label :tips_type, class: "label-tips" %>
+  <%= f.text_field :tips_type, class: "form-control" %>
+
+  <%= f.label :tips_content, class: "label-tips" %>
+  <%= f.text_area :tips_content, class: "form-control" %>
+
+  <%= f.submit "編集" %>
+<% end %>

@@ -1,0 +1,9 @@
+<% provide(:title, @tip.country + " " + @tip.tips_type) %>
+
+<h1><%= @tip.country + " " + @tip.tips_type %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p><%= @tip.tips_content %></p>
+  </div>
+</div>

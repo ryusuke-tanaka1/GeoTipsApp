@@ -5,7 +5,14 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <% if current_user?(@user) %>
-      <%= link_to "編集", edit_user_path, class: "btn btn-primary" %>
+      <%= link_to "アカウント編集", edit_user_path, class: "btn btn-primary" %>
+      <%= link_to "投稿", new_user_tip_path(@user), class: "btn btn-primary" %><br>
+    <% end %>
+    <% @tips.each do |tip| %>
+      <%= tip.tips_type + " " + tip.country %><br>
+      <%= tip.tips_content %><br>
+      <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn" %>
+      <br>
     <% end %>
   </div>
 </div>

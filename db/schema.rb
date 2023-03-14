@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230312095304) do
+ActiveRecord::Schema.define(version: 20230313060538) do
+
+  create_table "tips", force: :cascade do |t|
+    t.string "tips_type"
+    t.string "country"
+    t.string "tips_content"
+    t.string "street_view"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tips_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"

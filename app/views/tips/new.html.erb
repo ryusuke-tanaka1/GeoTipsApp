@@ -1,0 +1,21 @@
+<% provide(:title, "新規投稿") %>
+
+<h1>新規投稿</h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <%= form_with(model: @user, url: user_tips_path, local: true) do |f| %>
+      <%= f.fields_for :tips do |tip| %>
+        <%= tip.label :country, class: "label-tips" %>
+        <%= tip.text_field :country, class: "form-control" %>
+
+        <%= tip.label :tips_type, class: "label-tips" %>
+        <%= tip.text_field :tips_type, class: "form-control" %>
+
+        <%= tip.label :tips_content, class: "label-tips" %>
+        <%= tip.text_area :tips_content, class: "form-control" %>
+      <% end %>
+      <%= f.submit "投稿", class: "btn btn-block btn-primary" %>
+    <% end %>
+  </div>
+</div>

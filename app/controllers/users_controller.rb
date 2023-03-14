@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   def show
+    @tips = @user.tips.all
+    
   end
 
   def index

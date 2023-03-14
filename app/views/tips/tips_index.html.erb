@@ -1,0 +1,7 @@
+<% provide(:title, "Tips") %>
+
+<h1>Tips一覧</h1>
+<% @tips.each do |tip| %>
+  <%= tip.country + " " + tip.tips_type %><br>
+  <%= tip.tips_content %><br><br>
+<% end %>
