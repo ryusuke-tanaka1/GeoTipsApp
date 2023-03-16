@@ -16,6 +16,7 @@ class TipsController < ApplicationController
 
   def create
     @user = User.find(params[:user_id])
+    tip_params[:street_view] = URI.extract(tip_params[:street_view], ["https"])[0]
     @tip = @user.tips.new(tip_params)
     if @tip.save
       redirect_to user_tip_path(@user, @tip)
@@ -33,7 +34,11 @@ class TipsController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @tip = Tip.find(params[:id])
-    if @tip.update_attributes(edit_tip_params)
+    @tip.tips_type = edit_tip_params[:tips_type]
+    @tip.country = edit_tip_params[:country]
+    @tip.tips_content = edit_tip_params[:tips_content]
+    @tip.street_view = URI.extract(edit_tip_params[:street_view], ["https"])[0]
+    if @tip.save
       flash[:success] = "Tipsを編集しました。"
       redirect_to @user
     else
