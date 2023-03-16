@@ -11,6 +11,11 @@
     <% @tips.each do |tip| %>
       <%= tip.tips_type + " " + tip.country %><br>
       <%= tip.tips_content %><br>
+      <% if tip.street_view.present? %>
+        <p>
+          <%= tip.street_view.html_safe %>
+        </p>
+      <% end %>
       <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn" %>
       <br>
     <% end %>

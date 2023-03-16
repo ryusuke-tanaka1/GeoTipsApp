@@ -51,10 +51,10 @@ class TipsController < ApplicationController
 
   private
     def tip_params
-      params.require(:tips).permit(:tips_type, :country, :tips_content)
+      params.require(:tips).permit(:tips_type, :country, :tips_content, :street_view)
     end
 
     def edit_tip_params
-      params.require(:tip).permit(:tips_type, :country, :tips_content)
+      params.require(:tip).permit(:tips_type, :country, :tips_content, :street_view)
     end
 end

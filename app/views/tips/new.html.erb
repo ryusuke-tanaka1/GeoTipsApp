@@ -14,6 +14,9 @@
 
         <%= tip.label :tips_content, class: "label-tips" %>
         <%= tip.text_area :tips_content, class: "form-control" %>
+
+        <%= tip.label :street_view, class: "label-tips" %>
+        <%= tip.text_field :street_view, class: "form-control" %>
       <% end %>
       <%= f.submit "投稿", class: "btn btn-block btn-primary" %>
     <% end %>
