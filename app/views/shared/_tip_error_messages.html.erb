@@ -1,0 +1,12 @@
+<% if @tip.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger">
+      入力エラーが<%= @tip.errors.count %>件ありました。
+    </div>
+    <ul>
+      <% @tip.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

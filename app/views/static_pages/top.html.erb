@@ -5,7 +5,7 @@
   <h1>GeoTipsApp</h1>
   <div id="g_id_onload"
     data-client_id="80642622284-6kqq3sqv2usj1v152msmhqg1vn5kc1bb.apps.googleusercontent.com"
-    data-login_uri="http://localhost:3000"
+    data-login_uri="http://localhost:3000/login_path"
     data-auto_prompt="false">
   </div>
   <div class="g_id_signin"
@@ -16,6 +16,23 @@
     data-shape="rectangular"
     data-logo_alignment="left">
   </div>
-  <p><%= link_to "ログイン", login_path, class: "btn btn-primary" %></p>
-  <p><%= link_to "新規登録", new_user_path, class: "btn btn-primary" %></p>
+  <% if logged_in? %>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <% @tips.each do |tip| %>
+          <%= tip.tips_type + " " + tip.country %><br>
+          <%= tip.tips_content %><br>
+          <% if tip.street_view.present? %>
+            <p>
+              <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </p>
+            <br>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <p><%= link_to "ログイン", login_path, class: "btn btn-primary" %></p>
+    <p><%= link_to "新規登録", new_user_path, class: "btn btn-primary" %></p>
+  <% end %>
 </div>

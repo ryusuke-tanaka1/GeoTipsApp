@@ -1,33 +1,56 @@
 class TipsController < ApplicationController
+  before_action :set_user_id, only: [:show, :index, :new, :create, :edit, :update, :destroy]
+  before_action :admin_or_correct_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_countries, only: [:index, :tips_index, :new, :create, :edit, :update]
+
   def show
     @tip = Tip.find(params[:id])
   end
 
+  # 特定のユーザーのTips一覧
   def index
+    if params[:tips_condition]
+      conditions = { user_id: @user.id }
+      conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
+      conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
+      conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
+      @tips = Tip.where(conditions)
+    else
+      @tips = @user.tips.all
+    end
   end
 
+  # 全Tips一覧
   def tips_index
-    @tips = Tip.all
+    if params[:tips_condition]
+      conditions = {}
+      conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
+      conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
+      conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
+      @tips = Tip.where(conditions)
+    else
+      @tips = Tip.all
+    end
   end
 
   def new
-    @tip = Tip.new
+    @tip = @user.tips.new
   end
 
   def create
-    @user = User.find(params[:user_id])
-    tip_params[:street_view] = URI.extract(tip_params[:street_view], ["https"])[0]
-    @tip = @user.tips.new(tip_params)
+    @tip = @user.tips.new
+    @tip.tips_type = tip_params[:tips_type]
+    @tip.country = tip_params[:country]
+    @tip.tips_content = tip_params[:tips_content]
+    @tip.street_view = URI.extract(tip_params[:street_view], ["https"])[0]
     if @tip.save
-      redirect_to user_tip_path(@user, @tip)
+      redirect_to @user
     else
-      flash.now[:danger] = "投稿に失敗しました。"
       render :new
     end
   end
 
   def edit
-    @user = User.find(params[:user_id])
     @tip = Tip.find(params[:id])
   end
 
@@ -56,10 +79,14 @@ class TipsController < ApplicationController
 
   private
     def tip_params
-      params.require(:tips).permit(:tips_type, :country, :tips_content, :street_view)
+      params.require(:user).permit(tips: [:tips_type, :country, :tips_content, :street_view])[:tips]
     end
 
     def edit_tip_params
       params.require(:tip).permit(:tips_type, :country, :tips_content, :street_view)
+    end
+
+    def set_user_id
+      redirect_to root_url unless @user = User.find_by(id: params[:user_id])
     end
 end

@@ -3,14 +3,15 @@
     <%= link_to "GeoTips", root_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "トップ", root_path %></li>
         <li><%= link_to "Tips一覧", tips_index_path %></li>
         <% if logged_in? %>
           <% if current_user.admin? %>
             <li><%= link_to "ユーザー一覧", users_path %></li>
           <% end %>
-          <li><%= link_to "アカウント", current_user %></li>
+          <li><%= link_to current_user.name, current_user %></li>
           <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
+        <% else %>
+          <li><%= link_to "ログイン", login_path %></li>
         <% end %>
       </ul>
     </nav>

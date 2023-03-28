@@ -1,7 +1,34 @@
 <% provide(:title, "Tips") %>
 
 <h1>Tips一覧</h1>
-<% @tips.each do |tip| %>
-  <%= tip.country + " " + tip.tips_type %><br>
-  <%= tip.tips_content %><br><br>
-<% end %>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= form_with(scope: :tips_condition, url: tips_index_path, method: :get, local: true) do |f| %>
+      <%= f.label :country, class: "label-tips" %>
+      <%= f.select :country, @countries, { include_blank: true, selected:1 }, class: "form-control" %>
+
+      <%= f.label :tips_type, class: "label-tips" %>
+      <%= f.text_field :tips_type, class: "form-control" %>
+
+      <%= f.label :tips_content, class: "label-tips" %>
+      <%= f.text_field :tips_content, class: "form-control" %>
+
+      <%= f.submit "検索", class: "btn" %>
+    <% end %>
+    <% @tips.each do |tip| %>
+      <% user = User.find(tip.user_id) %>
+
+      <div class="card center-block" style="width: 50rem;">
+        <% if tip.street_view.present? %>
+          <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;"
+                  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>
+          <p class="card-text"><%= tip.tips_content %></p>
+          <%= link_to "詳細", user_tip_path(user, tip), class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

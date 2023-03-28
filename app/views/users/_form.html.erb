@@ -1,4 +1,5 @@
 <%= form_with(model: @user, local: true) do |f| %>
+  <%= render 'shared/user_error_messages' %>
   <%= f.label :name, class: "label-#{yield(:form_user)}" %>
   <%= f.text_field :name, class: "form-control" %>
 
@@ -11,5 +12,5 @@
   <%= f.label :password_confirmation, class: "label-#{yield(:form_user)}" %>
   <%= f.password_field :password_confirmation, class: "form-control" %>
 
-  <%= f.submit "アカウント作成", class: "btn btn-primary btn-block btn-#{yield(:form_user)}" %>
+  <%= f.submit yield(:submit_user), class: "btn btn-primary btn-block btn-#{yield(:form_user)}" %>
 <% end %>

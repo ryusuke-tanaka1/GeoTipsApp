@@ -1,11 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :admin_user, only: [:index]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :admin_or_correct_user, only: [:edit, :update, :destroy]
 
   def show
-    @tips = @user.tips.all
-    
+    @tips = @user.tips.order(created_at: :desc).limit(5)
   end
 
   def index
@@ -39,8 +38,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @user.destroy
     flash[:success] = "アカウントを削除しました。"
-    redirect_to root_url
+    redirect_to users_url
   end
 
   private

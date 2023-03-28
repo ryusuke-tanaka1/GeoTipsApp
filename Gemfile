@@ -11,6 +11,10 @@ gem 'jquery-rails'
 gem 'turbolinks',   '~> 5'
 gem 'jbuilder',     '~> 2.5'
 gem 'uri',          '~> 0.10.0'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+gem 'carrierwave', '~> 1.3', '>= 1.3.1'
+gem 'googleauth'
 
 group :development, :test do
   gem 'sqlite3'
