@@ -14,9 +14,9 @@ class TipsController < ApplicationController
       conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
       conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
       conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
-      @tips = Tip.where(conditions)
+      @tips = Tip.where(conditions).paginate(page: params[:page])
     else
-      @tips = @user.tips.all
+      @tips = @user.tips.paginate(page: params[:page])
     end
   end
 
@@ -27,9 +27,9 @@ class TipsController < ApplicationController
       conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
       conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
       conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
-      @tips = Tip.where(conditions)
+      @tips = Tip.where(conditions).paginate(page: params[:page])
     else
-      @tips = Tip.all
+      @tips = Tip.all.paginate(page: params[:page])
     end
   end
 

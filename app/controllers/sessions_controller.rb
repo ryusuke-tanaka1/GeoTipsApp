@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   require 'googleauth/id_tokens/verifier'
 
-  protect_from_forgery except: :create
+  protect_from_forgery except: :google_create
   before_action :verify_g_csrf_token, only: :google_create
 
   def new
@@ -21,9 +21,12 @@ class SessionsController < ApplicationController
 
   # Googleログインの場合
   def google_create
-    payload = Google::Auth::IDTokens.verify_oidc(params[:credential], aud: 'YOUR GOOGLE CLIENT ID')
+    payload = Google::Auth::IDTokens.verify_oidc(params[:credential], aud: '80642622284-6kqq3sqv2usj1v152msmhqg1vn5kc1bb.apps.googleusercontent.com')
     # パスワード設定してないから失敗するはず。
-    user = User.find_or_create_by(email: payload['email'])
+    unless user = User.find_by(email: payload['email'])
+      pass = SecureRandom.urlsafe_base64
+      user = User.create(name: payload['name'], email: payload['email'], password: pass)
+    end
     login user
     remember(user)
     flash[:success] ="ログインしました"

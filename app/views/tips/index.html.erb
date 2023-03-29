@@ -17,21 +17,23 @@
       <%= f.submit "検索", class: "btn" %>
     <% end %>
 
-    <% @tips.each do |tip| %>
-      <div class="card center-block" style="width: 50rem;">
-        <% if tip.street_view.present? %>
-          <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;"
-                  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <% end %>
-        <div class="card-body">
-          <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>
-          <p class="card-text"><%= tip.tips_content %></p>
-          <%= link_to "詳細", user_tip_path(@user, tip), class: "btn btn-primary" %>
-          <% if (current_user?(@user) || current_user.admin?) %>
-            <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn" %>
+    <%= will_paginate %>
+      <% @tips.each do |tip| %>
+        <div class="card center-block" style="width: 50rem;">
+          <% if tip.street_view.present? %>
+            <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>
+            <p class="card-text"><%= tip.tips_content %></p>
+            <%= link_to "詳細", user_tip_path(@user, tip), class: "btn btn-primary" %>
+            <% if (current_user?(@user) || current_user.admin?) %>
+              <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    <% will_paginate %>
   </div>
 </div>

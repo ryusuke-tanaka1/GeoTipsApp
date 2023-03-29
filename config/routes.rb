@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
+  post '/callback', to: 'sessions#google_create'
   delete '/logout', to: 'sessions#destroy'
 
   get 'tips_index', to: 'tips#tips_index'
