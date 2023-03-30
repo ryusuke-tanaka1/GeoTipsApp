@@ -18,8 +18,9 @@
     <%= will_paginate %>
       <% @tips.each do |tip| %>
         <% user = User.find(tip.user_id) %>
-
+        <%# カード表示 %>
         <div class="card center-block" style="width: 50rem;">
+          <%= user.name %>
           <% if tip.street_view.present? %>
             <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;"
                     allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>

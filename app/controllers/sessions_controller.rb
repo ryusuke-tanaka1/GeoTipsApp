@@ -22,7 +22,6 @@ class SessionsController < ApplicationController
   # Googleログインの場合
   def google_create
     payload = Google::Auth::IDTokens.verify_oidc(params[:credential], aud: '80642622284-6kqq3sqv2usj1v152msmhqg1vn5kc1bb.apps.googleusercontent.com')
-    # パスワード設定してないから失敗するはず。
     unless user = User.find_by(email: payload['email'])
       pass = SecureRandom.urlsafe_base64
       user = User.create(name: payload['name'], email: payload['email'], password: pass)

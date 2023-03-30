@@ -1,6 +1,6 @@
 module ApplicationHelper
   def create_title(page_title = "")
-    app_title = "GeoTips"
+    app_title = "GeoWiki"
     if page_title.blank?
       app_title
     else
