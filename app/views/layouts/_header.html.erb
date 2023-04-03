@@ -1,15 +1,16 @@
-<header class="navbar navbar-fixed-top navbar-inverse" >
+<header class="navbar navbar-fixed-top navbar-tips" >
   <div class="container">
-    <%= link_to "GeoWiki", root_path, id: "logo" %>
+    <%= link_to "GeoWiki", root_path, class: "header-string", id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Tips一覧", tips_index_path %></li>
+        <li><%= link_to "Tips一覧", tips_index_path, class: "header-string" %></li>
         <% if logged_in? %>
           <% if current_user.admin? %>
-            <li><%= link_to "ユーザー一覧", users_path %></li>
+            <li><%= link_to "ユーザー一覧", users_path, class: "header-string" %></li>
           <% end %>
+          <li><%= link_to "Tips投稿", new_user_tip_path(current_user), class: "header-string" %></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle header-string" data-toggle="dropdown">
               <%= current_user.name %> <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
@@ -17,12 +18,13 @@
               <li><%= link_to "設定", edit_user_path(current_user) %></li>
               <li><%= link_to "Tips一覧", user_tips_path(current_user) %></li>
               <li class="divider"></li>
-              <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
+              <li><%= link_to "ログアウト", logout_path, method: :delete, class: "header-string" %></li>
             </ul>
           </li>
-          <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
+          <li><%= link_to "ログアウト", logout_path, method: :delete, class: "header-string" %></li>
         <% else %>
-          <li><%= link_to "ログイン", login_path %></li>
+          <li><%= link_to "アカウント作成", new_user_path, class: "header-string" %></li>
+          <li><%= link_to "ログイン", login_path, class: "header-string" %></li>
         <% end %>
       </ul>
     </nav>

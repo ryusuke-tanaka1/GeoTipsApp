@@ -1,9 +1,14 @@
 <% provide(:title, @tip.country + " " + @tip.tips_type) %>
 
-<h1><%= @tip.country + " " + @tip.tips_type %></h1>
+<h1><%= @tip.country + "   " + @tip.tips_type %></h1>
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
+    <p>特徴</p>
     <p><%= @tip.tips_content %></p>
+    <% if @tip.street_view.present? %>
+      <iframe src="<%= @tip.street_view %>" width="600" height="450" style="border:0;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <% end %>
   </div>
 </div>
