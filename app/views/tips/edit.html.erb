@@ -17,6 +17,22 @@
       <%= f.label :street_view, class: "label-tips" %>
       <%= f.text_field :street_view, class: "form-control" %>
 
+      <%= f.label :img, class: "label-tips" %>
+      <%= f.file_field :img, class: 'form-control' %>
+      <%= f.hidden_field :img_cache %>
+
+      <% if @tip.img.present? %>
+        <%= f.label :remove_img, class: "checkbox inline checkbox-img", for: "remove_img" do %>
+          <%= f.check_box :remove_img, id: "remove_img" %>
+          <span>アップロードされている画像を削除する</span>
+        <% end %>
+        <p>
+          <%= image_tag @tip.img.url, class: 'rounded-circle mr15', width: '100%' %>
+        </p>
+      
+      <% end %>
+      
+
       <%= f.submit "編集", class: "btn btn-block btn-primary btn-tips-form" %>
     <% end %>
   </div>

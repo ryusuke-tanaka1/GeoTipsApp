@@ -57,6 +57,10 @@ class TipsController < ApplicationController
     @tip = Tip.find(params[:id])
     etp = edit_tip_params
     etp[:street_view] = URI.extract(etp[:street_view], ["https"])[0]
+    if etp[:remove_img] == "1"
+      @tip.remove_img!
+      @tip.save
+    end
     if @tip.update_attributes(etp)
       flash[:success] = "Tipsを編集しました。"
       redirect_to @user
@@ -79,7 +83,7 @@ class TipsController < ApplicationController
     end
 
     def edit_tip_params
-      params.require(:tip).permit(:tips_type, :country, :tips_content, :street_view)
+      params.require(:tip).permit(:tips_type, :country, :tips_content, :street_view, :img, :remove_img)
     end
 
     def set_user_id
