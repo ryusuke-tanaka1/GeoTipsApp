@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       login user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-      redirect_to root_url
+      redirect_to user
     else
       flash.now[:danger] = "認証に失敗しました。"
       render :new
@@ -24,12 +24,12 @@ class SessionsController < ApplicationController
     payload = Google::Auth::IDTokens.verify_oidc(params[:credential], aud: '80642622284-6kqq3sqv2usj1v152msmhqg1vn5kc1bb.apps.googleusercontent.com')
     unless user = User.find_by(email: payload['email'])
       pass = SecureRandom.urlsafe_base64
-      user = User.create(name: payload['name'], email: payload['email'], password: pass)
+      user = User.create(name: payload['name'], email: payload['email'], password: pass, login_by_google: true)
     end
     login user
     remember(user)
     flash[:success] ="ログインしました"
-    redirect_to root_url
+    redirect_to user
   end
 
   def destroy

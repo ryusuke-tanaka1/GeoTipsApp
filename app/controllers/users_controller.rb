@@ -4,7 +4,8 @@ class UsersController < ApplicationController
   before_action :admin_or_correct_user, only: [:edit, :update, :destroy]
 
   def show
-    @tips = @user.tips.order(created_at: :desc).limit(5)
+    @tips = @user.tips.order(created_at: :desc).limit(2)
+    @all_tips_count = @user.tips.all.count
   end
 
   def index

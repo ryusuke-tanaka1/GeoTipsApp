@@ -3,28 +3,48 @@
 <h1><%= @user.name %></h1>
 
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <% if current_user?(@user) %>
-      <%= link_to "アカウント編集", edit_user_path, class: "btn btn-primary" %>
-      <%= link_to "投稿", new_user_tip_path(@user), class: "btn btn-primary" %><br>
-    <% end %>
-    <% @tips.each do |tip| %>
-      <div class="card center-block" style="width: 50rem;">
-        <% if tip.street_view.present? %>
-          <iframe src="<%= tip.street_view %>" width="600" height="450" style="border:0;"
-                  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <% end %>
-        <div class="card-body">
-          <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>
-          <p class="card-text"><%= tip.tips_content %></p>
-          <%= link_to "詳細", user_tip_path(@user, tip), class: "btn btn-primary" %>
+  <div class="col-md-10 col-md-offset-1">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td>メールアドレス</td>
+        <td><%= @user.email %></td>
+      </tr>
+      <tr>
+        <td>Tips投稿数</td>
+        <td><%= @all_tips_count %></td>
+      </tr>
+      <% if (current_user?(@user) || current_user.admin?) %>
+        <tr>
+          <td><%= link_to "アカウント編集", edit_user_path, class: "btn btn-success" %></td>
+          <td><%= link_to "Tips新規投稿", new_user_tip_path(@user), class: "btn btn-success" %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <p><%= link_to "投稿したTipsを見る", user_tips_path(@user), class: "btn btn-primary" %></p>
+
+    <div class="card-group">
+      <% @tips.each do |tip| %>
+        <div class="card center-block" style="width: 45rem;">
+          <% if tip.street_view.present? %>
+            <iframe src="<%= tip.street_view %>" width="450" height="250" style="border:0;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <% elsif tip.img.present? %>
+            <p>
+              <%= image_tag tip.img.url, class: 'rounded-circle mr15', width: '100%' %>
+            </p>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>
+            <p class="card-text"><%= tip.tips_content %></p>
+            <%= link_to "Tips詳細", user_tip_path(@user, tip), class: "btn btn-primary btn-card" %>
+            <% if (current_user?(@user) || current_user.admin?) %>
+              <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn btn-success btn-card" %>
+            <% end %>
+          </div>
         </div>
-        <% if (current_user?(@user) || current_user.admin?) %>
-          <%= link_to "Tips編集", edit_user_tip_path(@user, tip), class: "btn" %>
-        <% end %>
-      </div>
-      <br>
-    <% end %>
-    <%= link_to "More", user_tips_path(@user), class: "btn" %>
+        <br>
+      <% end %>
+    </div>
   </div>
 </div>

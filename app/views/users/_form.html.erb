@@ -3,8 +3,13 @@
   <%= f.label :name, class: "label-#{yield(:form_user)}" %>
   <%= f.text_field :name, class: "form-control" %>
 
-  <%= f.label :email, class: "label-#{yield(:form_user)}" %>
-  <%= f.email_field :email, class: "form-control" %>
+  <% if @user.login_by_google == true %>
+    <%= f.label :email, class: "label-#{yield(:form_user)}" %>
+    <%= f.email_field :email, readonly: true, class: "form-control" %>
+  <% else %>
+    <%= f.label :email, class: "label-#{yield(:form_user)}" %>
+    <%= f.email_field :email, class: "form-control" %>
+  <% end %>
 
   <%= f.label :password, class: "label-#{yield(:form_user)}" %>
   <%= f.password_field :password, class: "form-control" %>

@@ -18,8 +18,13 @@
 
         <%= tip.label :street_view, "ストリートビューURL", class: "label-tips" %>
         <%= tip.text_field :street_view, class: "form-control" %>
+
+        <%= tip.label :img, class: "label-tips" %>
+        <%= tip.file_field :img, class: 'form-control' %>
+        <%= tip.hidden_field :img_cache %>
+
       <% end %>
-      <%= f.submit "投稿", class: "btn btn-block btn-primary btn-tips" %>
+      <%= f.submit "投稿", class: "btn btn-block btn-primary btn-tips-form" %>
     <% end %>
   </div>
 </div>

@@ -26,6 +26,8 @@
             <% if tip.street_view.present? %>
               <iframe src="<%= tip.street_view %>" class="card-iframe" width="600" height="450" style="border:0;"
                       allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <% elsif tip.img.present? %>
+              <%= image_tag tip.img.url, class: 'rounded-circle mr15', width: '100%' %>
             <% end %>
             <div class="card-body">
               <h5 class="card-title"><%= tip.country + " " + tip.tips_type %></h5>

@@ -1,10 +1,12 @@
 <%= provide(:title, "ユーザー登録") %>
 <%= provide(:submit_user, "アカウント作成") %>
+<%= provide(:form_user, "new") %>
 
 <h1>ユーザー登録</h1>
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
+    <%= render 'layouts/google_login' %>
     <%= render 'form' %>
   </div>
 </div>

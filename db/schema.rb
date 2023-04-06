@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230313060538) do
+ActiveRecord::Schema.define(version: 20230405160838) do
 
   create_table "tips", force: :cascade do |t|
     t.string "tips_type"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20230313060538) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "img"
     t.index ["user_id"], name: "index_tips_on_user_id"
   end
 
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20230313060538) do
     t.string "password_digest"
     t.boolean "admin", default: false
     t.string "remember_digest"
+    t.boolean "login_by_google", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

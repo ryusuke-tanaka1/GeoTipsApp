@@ -39,11 +39,9 @@ class TipsController < ApplicationController
 
   def create
     @tip = @user.tips.new
-    @tip.tips_type = tip_params[:tips_type]
-    @tip.country = tip_params[:country]
-    @tip.tips_content = tip_params[:tips_content]
-    @tip.street_view = URI.extract(tip_params[:street_view], ["https"])[0]
-    if @tip.save
+    tp = tip_params
+    tp[:street_view] = URI.extract(tp[:street_view])[0]
+    if @tip.update_attributes(tp)
       redirect_to @user
     else
       render :new
@@ -57,11 +55,9 @@ class TipsController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @tip = Tip.find(params[:id])
-    @tip.tips_type = edit_tip_params[:tips_type]
-    @tip.country = edit_tip_params[:country]
-    @tip.tips_content = edit_tip_params[:tips_content]
-    @tip.street_view = URI.extract(edit_tip_params[:street_view], ["https"])[0]
-    if @tip.save
+    etp = edit_tip_params
+    etp[:street_view] = URI.extract(etp[:street_view], ["https"])[0]
+    if @tip.update_attributes(etp)
       flash[:success] = "Tipsを編集しました。"
       redirect_to @user
     else
@@ -79,7 +75,7 @@ class TipsController < ApplicationController
 
   private
     def tip_params
-      params.require(:user).permit(tips: [:tips_type, :country, :tips_content, :street_view])[:tips]
+      params.require(:user).permit(tips: [:tips_type, :country, :tips_content, :street_view, :img])[:tips]
     end
 
     def edit_tip_params
