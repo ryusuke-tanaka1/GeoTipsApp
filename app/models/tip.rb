@@ -1,5 +1,6 @@
 class Tip < ApplicationRecord
   belongs_to :user
+  has_many :favorites, dependent: :destroy
   mount_uploader :img, ImgUploaderUploader
 
   validates :tips_type, presence: true

@@ -5,7 +5,13 @@ class UsersController < ApplicationController
 
   def show
     @tips = @user.tips.order(created_at: :desc).limit(2)
-    @all_tips_count = @user.tips.all.count
+    @all_tips = @user.tips.all
+    @all_tips_count = @all_tips.count
+
+    # 自分の全てのお気に入りのidを配列にして返す
+    favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
+    # 配列にしたidでTipsを指定してリストを作る
+    @favorite_list = Tip.find(favorites)
   end
 
   def index

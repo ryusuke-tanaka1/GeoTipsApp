@@ -10,11 +10,10 @@ class TipsController < ApplicationController
   # 特定のユーザーのTips一覧
   def index
     if params[:tips_condition]
-      conditions = { user_id: @user.id }
-      conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
-      conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
-      conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
-      @tips = Tip.where(conditions).paginate(page: params[:page]).order(created_at: :desc)
+      tips = Tip.where(country: params[:tips_condition][:country]) if params[:tips_condition].present? && params[:tips_condition][:country].present?
+      tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
+      tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
+      @tips = tips.paginate(page: params[:page]).order(created_at: :desc)
     else
       @tips = @user.tips.paginate(page: params[:page]).order(created_at: :desc)
     end
@@ -22,12 +21,17 @@ class TipsController < ApplicationController
 
   # 全Tips一覧
   def tips_index
-    if params[:tips_condition]
-      conditions = {}
-      conditions[:country] = params[:tips_condition][:country] if params[:tips_condition].present? && params[:tips_condition][:country].present?
-      conditions[:tips_type] = params[:tips_condition][:tips_type] if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
-      conditions[:tips_content] = params[:tips_condition][:tips_content] if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
-      @tips = Tip.where(conditions).paginate(page: params[:page]).order(created_at: :desc)
+    if params[:tips_condition].present?
+      tips = Tip.all
+      tips = tips.where(country: params[:tips_condition][:country]) if params[:tips_condition][:country].present?
+      tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition][:tips_type].present?
+      tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition][:tips_content].present?
+      # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
+      if params[:tips_condition][:user_favorite].present?
+        favorites = Favorite.where(user_id: params[:tips_condition][:user_favorite]).pluck(:tip_id)
+        tips = tips.where(id: favorites)
+      end
+      @tips = tips.paginate(page: params[:page]).order(created_at: :desc)
     else
       @tips = Tip.all.paginate(page: params[:page]).order(created_at: :desc)
     end
@@ -79,7 +83,7 @@ class TipsController < ApplicationController
 
   private
     def tip_params
-      params.require(:user).permit(tips: [:tips_type, :country, :tips_content, :street_view, :img])[:tips]
+      params.require(:user).permit(:user_favorite, tips: [:tips_type, :country, :tips_content, :street_view, :img, :user_favorite])[:tips]
     end
 
     def edit_tip_params

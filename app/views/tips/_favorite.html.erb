@@ -1,0 +1,7 @@
+<div id="favorite_<%= tip.id %>" >
+  <% if !Favorite.exists?(user: current_user, tip_id: tip.id) %>
+    <%= link_to "お気に入りに登録　#{tip.favorites.count}", create_favorite_path(tip), method: :post, remote: true, class: "btn btn-default btn-favorite" %>
+  <% else %>
+    <%= link_to "お気に入りから外す　#{tip.favorites.count}", destroy_favorite_path(tip), method: :delete, remote: true, class: "btn btn-default btn-favorite" %>
+  <% end %>
+</div>
