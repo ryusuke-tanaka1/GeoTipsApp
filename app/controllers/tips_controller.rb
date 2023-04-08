@@ -10,18 +10,25 @@ class TipsController < ApplicationController
   # 特定のユーザーのTips一覧
   def index
     if params[:tips_condition]
-      tips = Tip.where(country: params[:tips_condition][:country]) if params[:tips_condition].present? && params[:tips_condition][:country].present?
+      tips = Tip.all
+      tips = tips.where(country: params[:tips_condition][:country]) if params[:tips_condition].present? && params[:tips_condition][:country].present?
       tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
-      @tips = tips.paginate(page: params[:page]).order(created_at: :desc)
+       # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
+       if params[:tips_condition][:user_favorite].present?
+        favorites = Favorite.where(user_id: params[:tips_condition][:user_favorite]).pluck(:tip_id)
+        tips = tips.where(id: favorites)
+      end
+      @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     else
-      @tips = @user.tips.paginate(page: params[:page]).order(created_at: :desc)
+      @tips = @user.tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     end
   end
 
   # 全Tips一覧
   def tips_index
     if params[:tips_condition].present?
+      debugger
       tips = Tip.all
       tips = tips.where(country: params[:tips_condition][:country]) if params[:tips_condition][:country].present?
       tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition][:tips_type].present?
@@ -31,9 +38,9 @@ class TipsController < ApplicationController
         favorites = Favorite.where(user_id: params[:tips_condition][:user_favorite]).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
-      @tips = tips.paginate(page: params[:page]).order(created_at: :desc)
+      @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     else
-      @tips = Tip.all.paginate(page: params[:page]).order(created_at: :desc)
+      @tips = Tip.all.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     end
   end
 
@@ -46,7 +53,7 @@ class TipsController < ApplicationController
     tp = tip_params
     tp[:street_view] = URI.extract(tp[:street_view])[0]
     if @tip.update_attributes(tp)
-      redirect_to @user
+      redirect_to user_tip_url(@user, @tip)
     else
       render :new
     end
@@ -67,7 +74,7 @@ class TipsController < ApplicationController
     end
     if @tip.update_attributes(etp)
       flash[:success] = "Tipsを編集しました。"
-      redirect_to @user
+      redirect_to user_tip_path(@user, @tip)
     else
       render :edit
     end
@@ -79,6 +86,9 @@ class TipsController < ApplicationController
     @tip.destroy
     flash[:success] = "Tipsを削除しました。"
     redirect_to @user
+  end
+
+  def how_to_street_view
   end
 
   private

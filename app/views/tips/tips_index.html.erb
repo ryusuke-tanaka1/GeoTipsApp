@@ -5,16 +5,16 @@
   <div class="col-md-10 col-md-offset-1">
     <div class="index-form">
       <%= form_with(scope: :tips_condition, url: tips_index_path, method: :get, local: true) do |f| %>
-        <%= f.label :country, class: "label-tips" %>
+        <%= f.label :country, "国名", class: "label-tips" %>
         <%= f.select :country, @countries, { include_blank: true, selected:1 }, class: "form-control" %>
 
-        <%= f.label :tips_type, class: "label-tips" %>
+        <%= f.label :tips_type, "カテゴリー", class: "label-tips" %>
         <%= f.text_field :tips_type, class: "form-control" %>
 
-        <%= f.label :tips_content, class: "label-tips" %>
+        <%= f.label :tips_content, "内容", class: "label-tips" %>
         <%= f.text_field :tips_content, class: "form-control" %>
 
-        <%= f.submit "検索", class: "btn" %>
+        <%= f.submit "検索", class: "btn btn-tips-form" %>
       <% end %>
     </div>
     

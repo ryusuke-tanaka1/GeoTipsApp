@@ -17,6 +17,7 @@
               <li><%= link_to "プロフィール", current_user %></li>
               <li><%= link_to "設定", edit_user_path(current_user) %></li>
               <li><%= link_to "Tips一覧", user_tips_path(current_user) %></li>
+              <li><%= link_to "お気に入りTips一覧", tips_index_path(tips_condition: {user_favorite: current_user.id}) %></li>
               <li class="divider"></li>
               <li><%= link_to "ログアウト", logout_path, method: :delete, class: "header-string" %></li>
             </ul>

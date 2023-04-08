@@ -8,15 +8,16 @@
 
 
     <%= will_paginate %>
-      <table class="table table-condenced table-hover" id="table-users">
+      <table class="table table-condenced table-hover">
         <% @users.each do |user| %>
           <tr>
-            <td><%= link_to user.name, user %></td>
+            <td><%= link_to user.name, user, class: "user-index" %></td>
             <td>
               <% if current_user.admin? && !current_user?(user) %>
                 <%= link_to "削除", user, method: :delete,
                     data: { confirm: user.name + "を削除してよろしいですか？"},
-                    class: "btn btn-danger" %> 
+                    class: "btn btn-danger btn-index" %> 
+                <%= link_to "編集", edit_user_path(user), class: "btn btn-success btn-index" %>
               <% end %>
             </td>
           </tr>

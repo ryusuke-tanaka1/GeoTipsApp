@@ -15,6 +15,7 @@
       <%= f.text_area :tips_content, class: "form-control" %>
 
       <%= f.label :street_view, class: "label-tips" %>
+        <%= link_to "URLの貼り付け方はこちら", tips_how_to_street_view_path, remote: true, class: "how-to" %>
       <%= f.text_field :street_view, class: "form-control" %>
 
       <%= f.label :img, class: "label-tips" %>
@@ -38,3 +39,5 @@
   </div>
 </div>
 
+
+<div id="how-to-street-view" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

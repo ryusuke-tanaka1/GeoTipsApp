@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'tips/new'
 
   root 'static_pages#top'
 
@@ -9,8 +8,8 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   post '/favorite/:id', to: 'favorites#create', as: 'create_favorite'
   delete '/favorite/:id', to: 'favorites#destroy', as: 'destroy_favorite'
-
   get 'tips_index', to: 'tips#tips_index'
+  get 'tips/how_to_street_view'
 
   resources :users do
     resources :tips
