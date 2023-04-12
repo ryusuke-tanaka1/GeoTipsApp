@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       login user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      flash[:success] ="ログインしました"
       redirect_to user
     else
       flash.now[:danger] = "認証に失敗しました。"
@@ -25,10 +26,12 @@ class SessionsController < ApplicationController
     unless user = User.find_by(email: payload['email'])
       pass = SecureRandom.urlsafe_base64
       user = User.create(name: payload['name'], email: payload['email'], password: pass, login_by_google: true)
+      flash[:success] ="ユーザー登録しました"
+    else
+      flash[:success] ="ログインしました"
     end
     login user
     remember(user)
-    flash[:success] ="ログインしました"
     redirect_to user
   end
 

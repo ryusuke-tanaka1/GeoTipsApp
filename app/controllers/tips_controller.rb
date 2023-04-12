@@ -1,5 +1,6 @@
 class TipsController < ApplicationController
   before_action :set_user_id, only: [:show, :index, :new, :create, :edit, :update, :destroy]
+  before_action :login_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :admin_or_correct_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_countries, only: [:index, :tips_index, :new, :create, :edit, :update]
 
@@ -16,7 +17,7 @@ class TipsController < ApplicationController
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
        # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
        if params[:tips_condition][:user_favorite].present?
-        favorites = Favorite.where(user_id: params[:tips_condition][:user_favorite]).pluck(:tip_id)
+        favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
       @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
@@ -28,14 +29,13 @@ class TipsController < ApplicationController
   # 全Tips一覧
   def tips_index
     if params[:tips_condition].present?
-      debugger
       tips = Tip.all
       tips = tips.where(country: params[:tips_condition][:country]) if params[:tips_condition][:country].present?
       tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition][:tips_type].present?
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition][:tips_content].present?
       # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
       if params[:tips_condition][:user_favorite].present?
-        favorites = Favorite.where(user_id: params[:tips_condition][:user_favorite]).pluck(:tip_id)
+        favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
       @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
@@ -52,6 +52,9 @@ class TipsController < ApplicationController
     @tip = @user.tips.new
     tp = tip_params
     tp[:street_view] = URI.extract(tp[:street_view])[0]
+    if tip_params[:street_view].present? && tp[:street_view].nil?
+      tp[:street_view] = tip_params[:street_view]
+    end
     if @tip.update_attributes(tp)
       redirect_to user_tip_url(@user, @tip)
     else
@@ -68,6 +71,9 @@ class TipsController < ApplicationController
     @tip = Tip.find(params[:id])
     etp = edit_tip_params
     etp[:street_view] = URI.extract(etp[:street_view], ["https"])[0]
+    if edit_tip_params[:street_view].present? && etp[:street_view].nil?
+      etp[:street_view] = edit_tip_params[:street_view]
+    end
     if etp[:remove_img] == "1"
       @tip.remove_img!
       @tip.save

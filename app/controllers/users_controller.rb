@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :login_user, only: [:show, :index, :edit, :update, :destroy]
   before_action :admin_user, only: [:index]
   before_action :admin_or_correct_user, only: [:edit, :update, :destroy]
 
@@ -8,10 +9,13 @@ class UsersController < ApplicationController
     @all_tips = @user.tips.all
     @all_tips_count = @all_tips.count
 
-    # 自分の全てのお気に入りのidを配列にして返す
-    favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
-    # 配列にしたidでTipsを指定してリストを作る
-    @favorite_list = Tip.find(favorites)
+    if current_user?(@user)
+      # 自分の全てのお気に入りのidを配列にして返す
+      favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
+      # 配列にしたidでTipsを指定してリストを作る
+      @favorite_list = Tip.find(favorites)
+    end
+    
   end
 
   def index
@@ -26,6 +30,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       login @user
+      flash[:success] ="ユーザー登録しました"
       redirect_to @user
     else
       render :new

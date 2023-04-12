@@ -14,6 +14,11 @@
         <%= f.label :tips_content, "内容", class: "label-tips" %>
         <%= f.text_field :tips_content, class: "form-control" %>
 
+        <%= f.label :user_favorite, class: "checkbox inline checkbox-favorite", for: "user_favorite" do %>
+          <%= f.check_box :user_favorite, id: "user_favorite" %>
+          <span>お気に入りのみ表示する。</span>
+        <% end %>
+
         <%= f.submit "検索", class: "btn btn-tips-form" %>
       <% end %>
     </div>

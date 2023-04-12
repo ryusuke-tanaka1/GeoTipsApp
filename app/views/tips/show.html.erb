@@ -5,7 +5,9 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <div class="center">
-      <%= render 'favorite', tip: @tip %>
+      <% if logged_in? %>
+        <%= render 'favorite', tip: @tip %>
+      <% end %>
       <h2>特徴</h2>
       <p><%= @tip.tips_content %></p>
       <br>
@@ -20,11 +22,13 @@
         </p>
       <% end %>
 
-      <% if (current_user?(@user) || current_user.admin?) %>
-        <%= link_to "Tips編集", edit_user_tip_path(@user, @tip), class: "btn btn-success btn-tips-show" %>
-        <%= link_to "削除", user_tip_path(@user, @tip), method: :delete,
-                    data: { confirm: "このTipsを削除してよろしいですか？"},
-                    class: "btn btn-danger btn-tips-show" %> 
+      <% if logged_in? %>
+        <% if (current_user?(@user) || current_user.admin?) %>
+          <%= link_to "Tips編集", edit_user_tip_path(@user, @tip), class: "btn btn-success btn-tips-show" %>
+          <%= link_to "削除", user_tip_path(@user, @tip), method: :delete,
+                      data: { confirm: "このTipsを削除してよろしいですか？"},
+                      class: "btn btn-danger btn-tips-show" %> 
+        <% end %>
       <% end %>
     </div>
   </div>
