@@ -16,13 +16,18 @@ class TipsController < ApplicationController
       tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_type].present?
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition].present? && params[:tips_condition][:tips_content].present?
        # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
-       if params[:tips_condition][:user_favorite].present?
+      if params[:tips_condition][:user_favorite] == "1"
         favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
       @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     else
       @tips = @user.tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
+    end
+    if @tips.blank?
+      flash.now[:success] = "Tipsが見つかりませんでした。"
+    else
+      flash.now[:success] = "#{@tips.count}件のTipsが見つかりました。"
     end
   end
 
@@ -34,13 +39,19 @@ class TipsController < ApplicationController
       tips = tips.where('tips_type LIKE ?', "%#{params[:tips_condition][:tips_type]}%") if params[:tips_condition][:tips_type].present?
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition][:tips_content].present?
       # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
-      if params[:tips_condition][:user_favorite].present?
+      if params[:tips_condition][:user_favorite] == "1"
+        debugger
         favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
       @tips = tips.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
     else
       @tips = Tip.all.paginate(page: params[:page], per_page: 10).order(created_at: :desc)
+    end
+    if @tips.blank?
+      flash.now[:success] = "Tipsが見つかりませんでした。"
+    else
+      flash.now[:success] = "#{@tips.count}件のTipsが見つかりました。"
     end
   end
 
