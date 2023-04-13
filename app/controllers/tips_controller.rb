@@ -40,7 +40,6 @@ class TipsController < ApplicationController
       tips = tips.where('tips_content LIKE ?', "%#{params[:tips_condition][:tips_content]}%") if params[:tips_condition][:tips_content].present?
       # favoritesに自分がお気に入りに登録したTipsのidを格納、pluckで配列型に変換、keyは:tip_id
       if params[:tips_condition][:user_favorite] == "1"
-        debugger
         favorites = Favorite.where(user_id: current_user.id).pluck(:tip_id)
         tips = tips.where(id: favorites)
       end
