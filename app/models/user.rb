@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :tips
+  has_many :tips, dependent: :destroy
   has_many :favorites, dependent: :destroy
 
   attr_accessor :remember_token
