@@ -1,4 +1,4 @@
-# fly.toml file generated for geowiki on 2023-04-12T19:42:50+09:00
+# fly.toml file generated for geowiki on 2023-04-20T02:02:24+09:00
 
 app = "geowiki"
 kill_signal = "SIGINT"
