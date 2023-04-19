@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20230406103240) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "img"
+    t.string "img"  
     t.index ["user_id"], name: "index_tips_on_user_id"
   end
 
