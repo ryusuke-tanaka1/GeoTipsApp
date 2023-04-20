@@ -5,7 +5,7 @@ class TipsController < ApplicationController
   before_action :set_countries, only: [:index, :tips_index, :new, :create, :edit, :update]
 
   def show
-    @tip = Tip.find(params[:id])
+    redirect_to tips_index_url unless @tip = Tip.find_by(id: params[:id])
   end
 
   # 特定のユーザーのTips一覧
