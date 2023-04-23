@@ -9,7 +9,7 @@
       <%= f.select :country, @countries, { selected: @tip.country }, class: "form-control" %>
 
       <%= f.label :tips_type, class: "label-tips" %>
-      <%= f.text_field :tips_type, class: "form-control" %>
+      <%= f.select :tips_type, @categories, { selected: @tip.tips_type }, class: "form-control" %>
 
       <%= f.label :tips_content, class: "label-tips" %>
       <%= f.text_area :tips_content, class: "form-control" %>

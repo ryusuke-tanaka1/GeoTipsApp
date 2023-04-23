@@ -21,6 +21,12 @@ class ApplicationController < ActionController::Base
                   "香港", "その他"]
   end
 
+  def set_categories
+    @categories = ["カメラ", "グーグルカー", "ストリートビューカバレッジ", "ドメイン", "ナンバープレート", "フォローカー",
+                   "ボラード", "信号機", "国旗", "建物", "文字", "歩道", "自然、風景", "言語", "車線", "通貨", "道路",
+                   "道路名", "道路標識", "電柱", "電話番号", "その他"]
+  end
+
   private
     def login_user
       unless logged_in?

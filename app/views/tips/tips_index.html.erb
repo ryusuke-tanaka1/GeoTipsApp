@@ -9,7 +9,7 @@
         <%= f.select :country, @countries, { include_blank: true, selected:1 }, class: "form-control" %>
 
         <%= f.label :tips_type, "カテゴリー", class: "label-tips" %>
-        <%= f.text_field :tips_type, class: "form-control" %>
+        <%= f.select :tips_type, @categories, { include_blank: true, selected: 1 }, class: "form-control" %>
 
         <%= f.label :tips_content, "内容", class: "label-tips" %>
         <%= f.text_field :tips_content, class: "form-control" %>

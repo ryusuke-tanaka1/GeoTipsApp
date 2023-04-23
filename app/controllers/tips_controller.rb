@@ -3,6 +3,7 @@ class TipsController < ApplicationController
   before_action :login_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :admin_or_correct_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_countries, only: [:index, :tips_index, :new, :create, :edit, :update]
+  before_action :set_categories, only: [:index, :tips_index, :new, :create, :edit, :update]
 
   def show
     redirect_to tips_index_url unless @tip = Tip.find_by(id: params[:id])

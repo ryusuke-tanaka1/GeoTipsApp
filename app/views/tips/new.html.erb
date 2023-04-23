@@ -11,7 +11,7 @@
         <%= tip.select :country, @countries, { include_blank: true, selected: 1 }, class: "form-control" %>
 
         <%= tip.label :tips_type, "カテゴリー", class: "label-tips" %>
-        <%= tip.text_field :tips_type, class: "form-control" %>
+        <%= tip.select :tips_type, @categories, { include_blank: true, selected: 1 }, class: "form-control" %>
 
         <%= tip.label :tips_content, "内容", class: "label-tips" %>
         <%= tip.text_area :tips_content, class: "form-control" %>
